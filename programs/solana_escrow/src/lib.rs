@@ -15,7 +15,8 @@ declare_id!("7zWLG6ewGojjqT1QuXXWaUU5f1JH3ve1EUHouDF358DR");
 pub mod solana_escrow {
     use super::*;
 
-    pub fn initialize(ctx: Context<Initialize>) -> Result<()> {
-        initialize::handler(ctx)
+    pub fn make_offer(ctx: Context<MakeOffer>) -> Result<()> {
+        Ok(())
+        // initialize::handler(ctx)
     }
 }
