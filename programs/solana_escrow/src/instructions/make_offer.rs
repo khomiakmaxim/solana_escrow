@@ -4,9 +4,7 @@ use anchor_spl::{
     token_interface::{transfer_checked, Mint, TokenAccount, TokenInterface, TransferChecked},
 };
 
-
 use crate::{Offer, ANCHOR_DISCRIMINATOR};
-
 
 #[derive(Accounts)]
 #[instruction(id: u64)] // What's this instruction doing here? | This specifies the instruction per program?
@@ -42,4 +40,37 @@ pub struct MakeOffer<'info> {
     // I believe, System Program is required here since we create an account per offer.
     // Accounts are created via `SystemProgram`
     pub system_program: Program<'info, System>,
+}
+
+
+// Uhhh. That's not it. We must delegate our tokens.
+// To who?
+
+// To escrow program? Or to whom else?
+
+
+// Можемо спершу спробувати делегувати це offchain собі..
+pub fn delegate_tokens(
+    context: &Context<MakeOffer>,
+    token_a_offered_amount: u64
+) -> Result<()> {
+    unimplemented!()
+}
+
+pub fn save_offer(
+    context: Context<MakeOffer>,
+    id: u64,
+    token_a_offered_amount: u64,
+    token_b_wanted_amount: u64,
+) -> Result<()> {
+    context.accounts.offer.set_inner(Offer {
+        id,
+        maker: context.accounts.maker.key(),
+        token_mint_a: context.accounts.token_mint_a.key(),
+        token_mint_b: context.accounts.token_mint_b.key(),
+        token_a_offered_amount,
+        token_b_wanted_amount,
+        bump: context.bumps.offer,
+    });
+    Ok(())
 }
